@@ -48,3 +48,42 @@ else
     echo "Installation failed. Ensure $TARGET_DIR is in your PATH and try again."
     exit 1
 fi
+
+# Create .godspeed directory and services.json if they don't exist
+echo "Setting up configuration files..."
+
+# Determine the target user's home directory
+if [ -n "$SUDO_USER" ]; then
+    user_home=$(eval echo ~$SUDO_USER)
+else
+    user_home="$HOME"
+fi
+
+godspeed_dir="$user_home/.godspeed"
+services_json="$godspeed_dir/services.json"
+
+# Create .godspeed directory if it doesn't exist
+if [ ! -d "$godspeed_dir" ]; then
+    echo "Creating $godspeed_dir..."
+    mkdir -p "$godspeed_dir"
+    # Set ownership to SUDO_USER if available
+    if [ -n "$SUDO_USER" ]; then
+        chown "$SUDO_USER:$SUDO_USER" "$godspeed_dir"
+    fi
+else
+    echo "$godspeed_dir already exists. Skipping creation."
+fi
+
+# Create services.json if it doesn't exist
+if [ ! -f "$services_json" ]; then
+    echo "Creating $services_json..."
+    touch "$services_json"
+    # Set ownership to SUDO_USER if available
+    if [ -n "$SUDO_USER" ]; then
+        chown "$SUDO_USER:$SUDO_USER" "$services_json"
+    fi
+else
+    echo "$services_json already exists. Skipping creation."
+fi
+
+echo "Configuration files setup complete."
