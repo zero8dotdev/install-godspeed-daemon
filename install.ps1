@@ -38,15 +38,18 @@ if (Test-Path -Path $destinationPath) {
     exit
 }
 
-# Add the target directory to the PATH for this session
+# Add the target directory to the PATH for persistence
 $persistentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
 if (-not $persistentPath.Contains($targetDir)) {
     [Environment]::SetEnvironmentVariable('Path', "$persistentPath;$targetDir", 'User')
 }
 
+# Add it to the current session as well (to take effect immediately)
+$env:Path += ";$targetDir"
+
 # Verify if the installation was successful
-if (Get-Command godspeed-daemon -ErrorAction SilentlyContinue) {
-    Write-Host "Installation complete! You can now run 'godspeed-daemon'." -ForegroundColor Green
+if (Test-Path -Path $destinationPath) {
+    Write-Host "Installation complete! You can now run '$destinationPath'." -ForegroundColor Green
 } else {
     Write-Host "Installation failed." -ForegroundColor Red
     exit
@@ -67,10 +70,10 @@ else {
     Write-Host "Configuration directory already exists: $godspeedDir"
 }
 
-# Create services.json file with '{ "services": [] }' if it doesn't exist
+# Create services.json file with '{ "services": [] }' if it doesn't exist (UTF-8 without BOM)
 if (-not (Test-Path -Path $servicesJson)) {
     Write-Host "Creating configuration file: $servicesJson"
-    '{ "services": [] }' | Set-Content -Path $servicesJson -Encoding UTF8
+    '{ "services": [] }' | Out-File -FilePath $servicesJson -Encoding utf8
 }
 else {
     Write-Host "Configuration file already exists: $servicesJson"
