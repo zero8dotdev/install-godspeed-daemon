@@ -74,10 +74,10 @@ else
     echo "$godspeed_dir already exists. Skipping creation."
 fi
 
-# Create services.json if it doesn't exist
+# Create services.json if it doesn't exist and add '{}'
 if [ ! -f "$services_json" ]; then
     echo "Creating $services_json..."
-    touch "$services_json"
+    echo "{}" > "$services_json"
     # Set ownership to SUDO_USER if available
     if [ -n "$SUDO_USER" ]; then
         chown "$SUDO_USER:$SUDO_USER" "$services_json"
