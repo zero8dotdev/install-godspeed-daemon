@@ -67,10 +67,10 @@ else {
     Write-Host "Configuration directory already exists: $godspeedDir"
 }
 
-# Create services.json file with '{}' if it doesn't exist
+# Create services.json file with '{ "services": [] }' if it doesn't exist
 if (-not (Test-Path -Path $servicesJson)) {
     Write-Host "Creating configuration file: $servicesJson"
-    "[]" | Set-Content -Path $servicesJson -Encoding UTF8
+    '{ "services": [] }' | Set-Content -Path $servicesJson -Encoding UTF8
 }
 else {
     Write-Host "Configuration file already exists: $servicesJson"
