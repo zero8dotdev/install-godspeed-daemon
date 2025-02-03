@@ -70,7 +70,7 @@ else {
 # Create services.json file with '{}' if it doesn't exist
 if (-not (Test-Path -Path $servicesJson)) {
     Write-Host "Creating configuration file: $servicesJson"
-    "{}" | Set-Content -Path $servicesJson -Encoding UTF8
+    "[]" | Set-Content -Path $servicesJson -Encoding UTF8
 }
 else {
     Write-Host "Configuration file already exists: $servicesJson"
