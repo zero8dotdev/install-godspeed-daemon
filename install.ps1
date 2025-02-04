@@ -73,10 +73,16 @@ else {
 # Create services.json file with '{ "services": [] }' if it doesn't exist (UTF-8 without BOM)
 if (-not (Test-Path -Path $servicesJson)) {
     Write-Host "Creating configuration file: $servicesJson"
-    '{ "services": [] }' | Out-File -FilePath $servicesJson -Encoding utf8
-}
-else {
+    $content = '{ "services": [] }'
+    # Use UTF8Encoding with $false to skip BOM
+    [System.IO.File]::WriteAllText(
+        $servicesJson,
+        $content,
+        [System.Text.UTF8Encoding]::new($false)
+    )
+} else {
     Write-Host "Configuration file already exists: $servicesJson"
 }
+
 
 Write-Host "Configuration setup complete!`n" -ForegroundColor Cyan
