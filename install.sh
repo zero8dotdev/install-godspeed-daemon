@@ -65,7 +65,7 @@ services_json="$godspeed_dir/services.json"
 # Check if the .godspeed folder or services.json already exists
 if [ -d "$godspeed_dir" ] || [ -f "$services_json" ]; then
     read -p "Configuration already exists. Do you want to override it? (y/N): " choice
-    choice=${choice,,} # Convert to lowercase
+    choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]') # macOS-compatible lowercase conversion
     if [[ "$choice" != "y" ]]; then
         echo "Skipping configuration setup."
         exit 0
@@ -77,7 +77,7 @@ echo "Creating $godspeed_dir..."
 mkdir -p "$godspeed_dir"
 # Set ownership to SUDO_USER if available
 if [ -n "$SUDO_USER" ]; then
-    chown "$SUDO_USER:$SUDO_USER" "$godspeed_dir"
+    chown "$SUDO_USER:$(id -gn $SUDO_USER)" "$godspeed_dir"
 fi
 
 # Create services.json and add '{ "services": [] }'
@@ -85,7 +85,7 @@ echo "Creating $services_json..."
 echo '{ "services": [] }' >"$services_json"
 # Set ownership to SUDO_USER if available
 if [ -n "$SUDO_USER" ]; then
-    chown "$SUDO_USER:$SUDO_USER" "$services_json"
+    chown "$SUDO_USER:$(id -gn $SUDO_USER)" "$services_json"
 fi
 chmod 666 "$services_json"
 
