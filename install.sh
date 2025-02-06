@@ -82,6 +82,8 @@ if [ ! -f "$services_json" ]; then
     if [ -n "$SUDO_USER" ]; then
         chown "$SUDO_USER:$SUDO_USER" "$services_json"
     fi
+    chmod 666 "$services_json"
+
 else
     echo "$services_json already exists. Skipping creation."
 fi
