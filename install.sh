@@ -32,7 +32,7 @@ fi
 
 # Download the executable using curl
 echo "Downloading the godspeed-daemon executable..."
-curl -o "$TARGET_DIR/$EXECUTABLE_NAME" "$EXECUTABLE_URL" --silent --fail
+curl -# -o "$TARGET_DIR/$EXECUTABLE_NAME" "$EXECUTABLE_URL" --silent --fail
 if [[ $? -ne 0 ]]; then
     echo "Failed to download the executable. Please check your internet connection or the URL."
     exit 1
