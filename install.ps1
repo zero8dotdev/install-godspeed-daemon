@@ -9,6 +9,9 @@ if (-not $runAsAdmin.IsInRole($adminRole)) {
     exit
 }
 
+# Define the GitHub release URL
+$executableUrl = "https://github.com/zero8dotdev/install-godspeed-daemon/releases/download/v1.1.0/godspeed-daemon-win.exe"
+
 # Define the target installation directory
 $targetDir = "$env:USERPROFILE\AppData\Local\Programs\godspeed"
 
@@ -17,8 +20,7 @@ if (-not (Test-Path -Path $targetDir)) {
     New-Item -ItemType Directory -Path $targetDir | Out-Null
 }
 
-# Download the Windows executable to the target directory
-$executableUrl = "https://raw.githubusercontent.com/zero8dotdev/install-godspeed-daemon/main/executables/godspeed-daemon-win.exe"
+# Define the destination path
 $destinationPath = "$targetDir\godspeed-daemon.exe"
 
 Write-Host "Downloading godspeed-daemon..."
@@ -74,7 +76,6 @@ else {
 if (-not (Test-Path -Path $servicesJson)) {
     Write-Host "Creating configuration file: $servicesJson"
     $content = '{ "services": [] }'
-    # Use UTF8Encoding with $false to skip BOM
     [System.IO.File]::WriteAllText(
         $servicesJson,
         $content,
@@ -83,6 +84,5 @@ if (-not (Test-Path -Path $servicesJson)) {
 } else {
     Write-Host "Configuration file already exists: $servicesJson"
 }
-
 
 Write-Host "Configuration setup complete!`n" -ForegroundColor Cyan

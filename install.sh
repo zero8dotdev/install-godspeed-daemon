@@ -8,12 +8,12 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-# Define the GitHub repository URL
-REPO_URL="https://raw.githubusercontent.com/zero8dotdev/install-godspeed-daemon/main"
+# Define the GitHub release URLs
+BASE_URL="https://github.com/zero8dotdev/install-godspeed-daemon/releases/download/v1.1.0"
 
 # Define the installation and resource URLs for the executables
-EXECUTABLE_URL_LINUX="$REPO_URL/executables/godspeed-daemon-linux"
-EXECUTABLE_URL_MACOS="$REPO_URL/executables/godspeed-daemon-macos"
+EXECUTABLE_URL_LINUX="$BASE_URL/godspeed-daemon-linux"
+EXECUTABLE_URL_MACOS="$BASE_URL/godspeed-daemon-macos"
 
 # Define the target installation directory
 TARGET_DIR="/usr/local/bin"
@@ -32,7 +32,7 @@ fi
 
 # Download the executable using curl with progress bar
 echo "Downloading the godspeed-daemon executable..."
-curl -# -o "$TARGET_DIR/$EXECUTABLE_NAME" "$EXECUTABLE_URL" --fail
+curl -L -# -o "$TARGET_DIR/$EXECUTABLE_NAME" "$EXECUTABLE_URL" --fail
 if [[ $? -ne 0 ]]; then
     echo "Failed to download the executable. Please check your internet connection or the URL."
     exit 1
@@ -74,17 +74,14 @@ else
     echo "$godspeed_dir already exists. Skipping creation."
 fi
 
-# Create services.json if it doesn't exist and add '{ "services": [] }'
+# Create services.json if it doesn't exist
 if [ ! -f "$services_json" ]; then
     echo "Creating $services_json..."
     echo '{ "services": [] }' >"$services_json"
-    # Set ownership to SUDO_USER if available
     if [ -n "$SUDO_USER" ]; then
         chown "$SUDO_USER:$SUDO_USER" "$services_json"
     fi
-
     chmod 666 "$services_json"
-
 else
     echo "$services_json already exists. Skipping creation."
 fi
