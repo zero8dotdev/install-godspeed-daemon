@@ -9,7 +9,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Define the GitHub release URLs
-BASE_URL="https://github.com/zero8dotdev/install-godspeed-daemon/releases/download/v1.1.0"
+BASE_URL="https://github.com/zero8dotdev/install-godspeed-daemon/releases/download/v1.1.2"
 
 # Define the installation and resource URLs for the executables
 EXECUTABLE_URL_LINUX="$BASE_URL/godspeed-daemon-linux"

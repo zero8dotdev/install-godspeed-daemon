@@ -10,7 +10,7 @@ if (-not $runAsAdmin.IsInRole($adminRole)) {
 }
 
 # Define the GitHub release URL
-$executableUrl = "https://github.com/zero8dotdev/install-godspeed-daemon/releases/download/v1.1.0/godspeed-daemon-win.exe"
+$executableUrl = "https://github.com/zero8dotdev/install-godspeed-daemon/releases/download/v1.1.2/godspeed-daemon-win.exe"
 
 # Define the target installation directory
 $targetDir = "$env:USERPROFILE\AppData\Local\Programs\godspeed"
