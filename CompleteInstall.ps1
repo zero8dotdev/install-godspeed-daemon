@@ -163,55 +163,55 @@ Write-Host "`nInstalling Godspeed CLI..." -ForegroundColor Cyan
 npm install -g @godspeedsystems/godspeed
 #endregion
 
-#region Daemon Installation
-Write-Host "`nStarting Daemon Installation..." -ForegroundColor Cyan
+# #region Daemon Installation
+# Write-Host "`nStarting Daemon Installation..." -ForegroundColor Cyan
 
-$daemonUrl = "https://github.com/zero8dotdev/install-godspeed-daemon/releases/download/v1.1.2/godspeed-daemon-win.exe"
-$targetDir = "$env:USERPROFILE\AppData\Local\Programs\godspeed"
-$destinationPath = "$targetDir\godspeed-daemon.exe"
+# $daemonUrl = "https://github.com/zero8dotdev/install-godspeed-daemon/releases/download/v1.1.2/godspeed-daemon-win.exe"
+# $targetDir = "$env:USERPROFILE\AppData\Local\Programs\godspeed"
+# $destinationPath = "$targetDir\godspeed-daemon.exe"
 
-# Create installation directory
-if (-not (Test-Path $targetDir)) {
-    New-Item -Path $targetDir -ItemType Directory -Force | Out-Null
-}
+# # Create installation directory
+# if (-not (Test-Path $targetDir)) {
+#     New-Item -Path $targetDir -ItemType Directory -Force | Out-Null
+# }
 
-# Download daemon
-try {
-    Write-Host "Downloading godspeed-daemon..."
-    Invoke-WebRequest -Uri $daemonUrl -OutFile $destinationPath -ErrorAction Stop
-}
-catch {
-    Write-Host "Download failed: $_" -ForegroundColor Red
-    exit
-}
+# # Download daemon
+# try {
+#     Write-Host "Downloading godspeed-daemon..."
+#     Invoke-WebRequest -Uri $daemonUrl -OutFile $destinationPath -ErrorAction Stop
+# }
+# catch {
+#     Write-Host "Download failed: $_" -ForegroundColor Red
+#     exit
+# }
 
-# Add to PATH
-$persistentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
-if (-not $persistentPath.Contains($targetDir)) {
-    [Environment]::SetEnvironmentVariable('Path', "$persistentPath;$targetDir", 'User')
-    $env:Path += ";$targetDir"
-}
+# # Add to PATH
+# $persistentPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+# if (-not $persistentPath.Contains($targetDir)) {
+#     [Environment]::SetEnvironmentVariable('Path', "$persistentPath;$targetDir", 'User')
+#     $env:Path += ";$targetDir"
+# }
 
-# Verify installation
-if (-not (Test-Path $destinationPath)) {
-    Write-Host "Daemon installation failed!" -ForegroundColor Red
-    exit
-}
+# # Verify installation
+# if (-not (Test-Path $destinationPath)) {
+#     Write-Host "Daemon installation failed!" -ForegroundColor Red
+#     exit
+# }
 
-# Configuration setup
-$godspeedDir = Join-Path $env:USERPROFILE ".godspeed"
-$servicesJson = Join-Path $godspeedDir "services.json"
+# # Configuration setup
+# $godspeedDir = Join-Path $env:USERPROFILE ".godspeed"
+# $servicesJson = Join-Path $godspeedDir "services.json"
 
-if (-not (Test-Path $godspeedDir)) {
-    New-Item -Path $godspeedDir -ItemType Directory | Out-Null
-}
+# if (-not (Test-Path $godspeedDir)) {
+#     New-Item -Path $godspeedDir -ItemType Directory | Out-Null
+# }
 
-if (-not (Test-Path $servicesJson)) {
-    [System.IO.File]::WriteAllText($servicesJson, '{ "services": [] }', [System.Text.UTF8Encoding]::new($false))
-}
+# if (-not (Test-Path $servicesJson)) {
+#     [System.IO.File]::WriteAllText($servicesJson, '{ "services": [] }', [System.Text.UTF8Encoding]::new($false))
+# }
 
-Write-Host "Daemon installation completed successfully!" -ForegroundColor Green
-#endregion
+# Write-Host "Daemon installation completed successfully!" -ForegroundColor Green
+# #endregion
 
 # Final checks
 Write-Host "`nVerifying installations..." -ForegroundColor Cyan
